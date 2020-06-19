@@ -4,9 +4,14 @@ import discord, tokens, markovify
 async def markovChannel(message):
     async with message.channel.typing():
         fullstr = ""
+        x = 0
         async for post in message.channel.history(limit=None):
-            fullstr += post.content + ". "
-            print(post.content)
+            postText = post.content
+            if not postText.endswith(".") and not postText.endswith("!") and not postText.endswith("?"):
+                postText += ". "
+            fullstr += postText
+            x+=1
+        print("Markoving from", x, "entries.")
         model = markovify.Text(fullstr)
         markovStrings = ""
         for i in range(3):
